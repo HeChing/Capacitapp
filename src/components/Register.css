@@ -1,0 +1,98 @@
+/* src/components/Register.css */
+.register-container {
+  display: flex;
+  height: 100vh;
+  font-family: sans-serif;
+}
+
+.left-panel {
+  flex: 1;
+  background-color: #5271ff; /* Fondo azul igual que en el login */
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+}
+
+.left-panel h2 {
+  margin-bottom: 1.5rem;
+}
+
+.left-panel form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 400px;
+}
+
+.left-panel label {
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+  color: white;
+}
+
+.left-panel input {
+  background-color: transparent; /* Campo transparente */
+  border: 1px solid #ccc; /* Borde gris */
+  color: white; /* Texto en blanco para buen contraste */
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+  border-radius: 4px;
+}
+
+.left-panel button {
+  padding: 0.75rem;
+  background-color: #3e97ff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.left-panel button:hover {
+  background-color: #0056b3;
+}
+
+.error {
+  margin-bottom: 1rem;
+  color: #ffcccc;
+  text-align: center;
+}
+
+.mensaje {
+  margin-bottom: 1rem;
+  color: #28a745;
+  text-align: center;
+}
+
+.right-panel {
+  flex: 1;
+  background-color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.right-panel .logo img {
+  max-width: 80%;
+  height: auto;
+}
+
+/* Estilos para el texto de login debajo del botón de registro */
+.login-link {
+  margin-top: 1rem;
+  text-align: center;
+}
+
+.login-link a {
+  color: #ffffff; /* Color blanco para resaltar en fondo azul */
+  text-decoration: underline;
+  font-weight: bold;
+}
+
+.login-link a:hover {
+  color: #dcdcdc;
+}
