@@ -1,8 +1,8 @@
-// ✅ REEMPLAZAR: src/components/Home.jsx
+// ✅ CREAR: src/pages/Ayuda.jsx
 
-import DashboardLayout from './layout/DashboardLayout';
+import DashboardLayout from '../components/layout/DashboardLayout';
 
-function Home() {
+function Ayuda() {
   return (
     <DashboardLayout>
       <div
@@ -17,16 +17,13 @@ function Home() {
       >
         <div>
           <h2 style={{ marginBottom: '10px', color: '#333' }}>
-            ¡Bienvenido al Dashboard!
+            Centro de Ayuda
           </h2>
-          <p>
-            Esta es tu página principal. Aquí podrás agregar el contenido que
-            necesites.
-          </p>
+          <p>Encuentra respuestas a tus preguntas. Contenido por agregar.</p>
         </div>
       </div>
     </DashboardLayout>
   );
 }
 
-export default Home;
+export default Ayuda;

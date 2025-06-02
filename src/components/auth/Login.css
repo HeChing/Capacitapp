@@ -1,0 +1,452 @@
+/* ✅ REEMPLAZAR COMPLETAMENTE: src/components/auth/Login.css */
+
+.auth-container {
+  min-height: 100vh;
+  display: flex;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Panel izquierdo - Gradiente igual a la imagen */
+.left-panel {
+  flex: 1;
+  background: #5271ff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+  position: relative;
+}
+
+/* Panel derecho - Logo */
+.right-panel {
+  flex: 1;
+  background: #f8f9fa;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+}
+
+.logo img {
+  max-width: 300px;
+  width: 100%;
+  height: auto;
+}
+
+/* Título principal */
+.auth-title {
+  color: white;
+  font-size: 32px;
+  font-weight: 300;
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+/* 🆕 Contenedor del formulario con ancho fijo */
+.auth-form {
+  width: 100%;
+  max-width: 400px; /* Ancho máximo del formulario */
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centrar todos los elementos */
+}
+
+/* 🆕 Grupos de inputs con ancho uniforme */
+.input-group {
+  width: 100%; /* Todos ocupan el 100% del contenedor */
+  margin-bottom: 20px;
+}
+
+/* 🆕 Inputs con ancho uniforme */
+.auth-input {
+  width: 100%; /* Ocupa todo el ancho disponible */
+  padding: 15px 20px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 25px;
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  font-size: 16px;
+  outline: none;
+  transition: all 0.3s ease;
+  box-sizing: border-box; /* Incluye padding y border en el ancho */
+}
+
+.auth-input::placeholder {
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 300;
+}
+
+.auth-input:focus {
+  border-color: rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+  transform: translateY(-1px);
+}
+
+/* Contenedor de contraseña con ojo */
+.password-wrapper {
+  position: relative;
+  width: 100%; /* Mismo ancho que los inputs */
+}
+
+.password-toggle {
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.7);
+  cursor: pointer;
+  padding: 0;
+  font-size: 18px;
+  transition: color 0.3s ease;
+}
+
+.password-toggle:hover {
+  color: white;
+}
+
+/* 🆕 Checkbox con ancho uniforme */
+.checkbox-container {
+  width: 100%; /* Mismo ancho que otros elementos */
+  display: flex;
+  align-items: center;
+  justify-content: flex-start; /* Alinear a la izquierda */
+  margin: 25px 0;
+  cursor: pointer;
+  padding: 0 5px; /* Pequeño padding para alineación */
+}
+
+.custom-checkbox {
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  border-radius: 4px;
+  background: transparent;
+  margin-right: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+
+.custom-checkbox.checked {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: white;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
+.custom-checkbox .checkmark {
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.checkbox-label {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 14px;
+  user-select: none;
+  line-height: 1.4;
+}
+
+/* 🆕 Botón principal con ancho uniforme */
+.auth-button {
+  width: 100%; /* Mismo ancho que los inputs */
+  padding: 15px 20px;
+  background: rgba(102, 126, 234, 0.8);
+  border: none;
+  border-radius: 25px;
+  color: white;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin: 10px 0;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.auth-button:hover:not(:disabled) {
+  background: rgba(102, 126, 234, 1);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+}
+
+.auth-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* 🆕 Botón de Google con ancho uniforme */
+.google-button {
+  width: 100%; /* Mismo ancho que todos los demás */
+  padding: 15px 20px;
+  background: white;
+  border: none;
+  border-radius: 25px;
+  color: #333;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin: 10px 0;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.google-button:hover:not(:disabled) {
+  background: #f8f9fa;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.google-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.google-logo {
+  width: 20px;
+  height: 20px;
+}
+
+/* 🆕 Separador con ancho uniforme */
+.auth-divider {
+  width: 100%; /* Mismo ancho que otros elementos */
+  display: flex;
+  align-items: center;
+  margin: 25px 0;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 14px;
+}
+
+.auth-divider::before,
+.auth-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.auth-divider span {
+  padding: 0 15px;
+}
+
+/* 🆕 Enlaces con ancho uniforme */
+.auth-links {
+  width: 100%; /* Mismo ancho que otros elementos */
+  text-align: center;
+  margin: 15px 0 5px 0;
+}
+
+.auth-links a {
+  color: rgba(255, 255, 255, 0.9);
+  text-decoration: none;
+  font-size: 14px;
+  transition: color 0.3s ease;
+}
+
+.auth-links a:hover {
+  color: white;
+  text-decoration: underline;
+}
+
+/* Mensajes de error con ancho uniforme */
+.error-message {
+  width: 100%;
+  background: rgba(255, 69, 58, 0.9);
+  color: white;
+  padding: 12px 20px;
+  border-radius: 20px;
+  margin-bottom: 20px;
+  text-align: center;
+  font-size: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-sizing: border-box;
+}
+
+/* Mensajes de éxito con ancho uniforme */
+.success-message {
+  width: 100%;
+  background: rgba(52, 199, 89, 0.9);
+  color: white;
+  padding: 12px 20px;
+  border-radius: 20px;
+  margin-bottom: 20px;
+  text-align: center;
+  font-size: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-sizing: border-box;
+}
+
+/* Estados de carga */
+.loading-spinner {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: white;
+  animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Animación del checkbox */
+@keyframes checkAnimation {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.custom-checkbox.checked .checkmark {
+  animation: checkAnimation 0.3s ease-in-out;
+}
+
+/* Logo styles */
+.logo {
+  text-align: center;
+  padding: 20px;
+}
+
+.logo img {
+  max-width: 280px;
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
+  transition: transform 0.3s ease;
+}
+
+.logo img:hover {
+  transform: scale(1.05);
+}
+
+.logo-text {
+  font-size: 48px;
+  font-weight: 700;
+  background: #5271ff;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-align: center;
+  padding: 40px 0;
+}
+
+/* 🆕 Responsive mejorado */
+@media (max-width: 768px) {
+  .auth-container {
+    flex-direction: column;
+  }
+
+  .right-panel {
+    order: -1;
+    flex: 0 0 auto;
+    padding: 20px;
+  }
+
+  .left-panel {
+    min-height: calc(100vh - 200px);
+    padding: 30px 20px;
+  }
+
+  .auth-title {
+    font-size: 28px;
+    margin-bottom: 30px;
+  }
+
+  /* 🆕 Mantener anchos uniformes en mobile */
+  .auth-form {
+    max-width: 350px; /* Ligeramente más pequeño en mobile */
+  }
+
+  .auth-input,
+  .auth-button,
+  .google-button {
+    padding: 12px 18px; /* Padding ligeramente menor */
+    font-size: 15px;
+  }
+
+  .checkbox-container {
+    margin: 20px 0;
+  }
+
+  .checkbox-label {
+    font-size: 13px;
+  }
+
+  .custom-checkbox {
+    width: 18px;
+    height: 18px;
+    margin-right: 10px;
+  }
+
+  .custom-checkbox .checkmark {
+    font-size: 10px;
+  }
+
+  .logo img {
+    max-width: 200px;
+  }
+
+  .logo-text {
+    font-size: 36px;
+    padding: 20px 0;
+  }
+}
+
+/* 🆕 Estilos adicionales para perfecta alineación */
+@media (min-width: 769px) {
+  .auth-form {
+    max-width: 380px; /* Ancho fijo en desktop */
+  }
+}
+
+/* 🆕 Transiciones suaves para todos los elementos */
+.auth-input,
+.auth-button,
+.google-button,
+.custom-checkbox,
+.password-toggle {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 🆕 Efectos hover mejorados */
+.checkbox-container:hover .custom-checkbox {
+  border-color: rgba(255, 255, 255, 0.8);
+  transform: scale(1.05);
+}
+
+.checkbox-container:hover .checkbox-label {
+  color: white;
+}
+
+/* 🆕 Estados focus mejorados */
+.auth-input:focus {
+  border-color: rgba(255, 255, 255, 0.8);
+  background: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+  transform: translateY(-1px);
+}

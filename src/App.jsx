@@ -1,43 +1,84 @@
-// src/App.jsx
-import { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import appFirebase from './credenciales.js';
+// ✅ ACTUALIZAR: src/App.jsx
 
-import Login from './components/login.jsx';
-import Register from './components/Register.jsx';
-import Home from './components/Home.jsx';
-
-import './App.css';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from 'react-router-dom';
+import { AuthProvider } from './contexts/AuthContext';
+import Login from './components/auth/Login';
+import Register from './components/auth/Register';
+import Home from './components/Home';
+import Inicio from './pages/Inicio';
+import MisCursos from './pages/MisCursos';
+import Logros from './pages/Logros';
+import Ayuda from './pages/Ayuda';
+import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
-  const [usuario, setUsuario] = useState(null);
-  const auth = getAuth(appFirebase);
-
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (usuarioFirebase) => {
-      if (usuarioFirebase) {
-        setUsuario(usuarioFirebase);
-      } else {
-        setUsuario(null);
-      }
-    });
-    return () => unsubscribe();
-  }, [auth]);
-
   return (
-    <Router>
-      <Routes>
-        {/* Si no hay usuario, mostramos Login en "/" */}
-        <Route
-          path="/"
-          element={usuario ? <Home correoUsuario={usuario.email} /> : <Login />}
-        />
-        {/* Ruta adicional para login */}
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-      </Routes>
-    </Router>
+    <AuthProvider>
+      <Router>
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+
+          {/* Rutas protegidas */}
+          <Route
+            path="/"
+            element={
+              <ProtectedRoute>
+                <Home />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute>
+                <Home />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/inicio"
+            element={
+              <ProtectedRoute>
+                <Inicio />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/cursos"
+            element={
+              <ProtectedRoute>
+                <MisCursos />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/logros"
+            element={
+              <ProtectedRoute>
+                <Logros />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/ayuda"
+            element={
+              <ProtectedRoute>
+                <Ayuda />
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Redirigir rutas no encontradas */}
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </Router>
+    </AuthProvider>
   );
 }
 
