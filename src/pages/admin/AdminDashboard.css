@@ -1,0 +1,64 @@
+/* ✅ CREAR: src/pages/admin/AdminDashboard.css */
+
+.admin-dashboard {
+  padding: 20px;
+}
+
+.admin-dashboard h1 {
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.admin-dashboard p {
+  color: #666;
+  margin-bottom: 20px;
+}
+
+.badge {
+  background-color: #007bff;
+  color: white;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.admin-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+  margin-top: 30px;
+}
+
+.admin-card {
+  background: white;
+  border-radius: 8px;
+  padding: 30px;
+  text-decoration: none;
+  color: inherit;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  text-align: center;
+}
+
+.admin-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.card-icon {
+  font-size: 48px;
+  margin-bottom: 15px;
+}
+
+.admin-card h3 {
+  color: #333;
+  margin-bottom: 10px;
+  font-size: 20px;
+}
+
+.admin-card p {
+  color: #666;
+  font-size: 14px;
+  margin: 0;
+}
