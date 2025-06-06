@@ -1,0 +1,182 @@
+/* ✅ CREAR: src/pages/admin/Reports.css (continuación) */
+
+.stat-change {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.stat-change.positive {
+  color: #28a745;
+}
+
+.stat-change.negative {
+  color: #dc3545;
+}
+
+.reports-content {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.report-section {
+  background: white;
+  border-radius: 8px;
+  padding: 25px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.report-section h2 {
+  margin: 0 0 20px 0;
+  color: #333;
+  font-size: 20px;
+}
+
+.role-distribution {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.role-bar {
+  display: grid;
+  grid-template-columns: 120px 1fr 50px;
+  align-items: center;
+  gap: 15px;
+}
+
+.role-label {
+  font-weight: 500;
+  color: #495057;
+  text-transform: capitalize;
+}
+
+.bar-container {
+  background-color: #e9ecef;
+  height: 24px;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.bar-fill {
+  background-color: #007bff;
+  height: 100%;
+  transition: width 0.3s ease;
+  background-image: linear-gradient(
+    45deg,
+    rgba(255, 255, 255, 0.15) 25%,
+    transparent 25%,
+    transparent 50%,
+    rgba(255, 255, 255, 0.15) 50%,
+    rgba(255, 255, 255, 0.15) 75%,
+    transparent 75%,
+    transparent
+  );
+  background-size: 1rem 1rem;
+}
+
+.role-count {
+  text-align: right;
+  font-weight: 600;
+  color: #333;
+}
+
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 15px;
+}
+
+.category-card {
+  background-color: #f8f9fa;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  border: 1px solid #e9ecef;
+  transition: transform 0.2s;
+}
+
+.category-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.category-card h4 {
+  margin: 0 0 10px 0;
+  color: #495057;
+}
+
+.category-count {
+  margin: 0;
+  font-size: 24px;
+  font-weight: bold;
+  color: #007bff;
+}
+
+.activity-table {
+  overflow-x: auto;
+}
+
+.activity-table table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.activity-table th {
+  background-color: #f8f9fa;
+  padding: 12px;
+  text-align: left;
+  font-weight: 600;
+  color: #495057;
+  border-bottom: 2px solid #dee2e6;
+}
+
+.activity-table td {
+  padding: 12px;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.activity-table tr:hover {
+  background-color: #f8f9fa;
+}
+
+.export-section {
+  margin-top: 30px;
+  text-align: center;
+}
+
+.btn-export {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-export:hover {
+  background-color: #218838;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .reports-header {
+    flex-direction: column;
+    gap: 15px;
+    align-items: flex-start;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .role-bar {
+    grid-template-columns: 100px 1fr 40px;
+    font-size: 14px;
+  }
+}

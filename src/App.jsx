@@ -6,7 +6,7 @@ import {
   Route,
   Navigate,
 } from 'react-router-dom';
-import { AuthProvider } from './contexts/AuthContext';
+import { AuthProvider, ROLES } from './contexts/AuthContext';
 import Login from './components/auth/Login';
 import Register from './components/auth/Register';
 import Home from './components/Home';
@@ -15,6 +15,13 @@ import MisCursos from './pages/MisCursos';
 import Logros from './pages/Logros';
 import Ayuda from './pages/Ayuda';
 import ProtectedRoute from './components/ProtectedRoute';
+// import RoleProtectedRoute from './components/RoleProtectedRoute';
+
+// Comentar temporalmente las importaciones de páginas que no existen
+// import AdminDashboard from './pages/admin/AdminDashboard';
+// import UserManagement from './pages/admin/UserManagement';
+// import CourseManagement from './pages/admin/CourseManagement';
+// import Reports from './pages/admin/Reports';
 
 function App() {
   return (
@@ -73,6 +80,20 @@ function App() {
               </ProtectedRoute>
             }
           />
+
+          {/* Comentar temporalmente las rutas administrativas
+          <Route
+            path="/admin"
+            element={
+              <RoleProtectedRoute 
+                allowedRoles={[ROLES.SUPER_ADMIN, ROLES.ADMIN]}
+                redirectTo="/inicio"
+              >
+                <AdminDashboard />
+              </RoleProtectedRoute>
+            }
+          />
+          */}
 
           {/* Redirigir rutas no encontradas */}
           <Route path="*" element={<Navigate to="/" replace />} />

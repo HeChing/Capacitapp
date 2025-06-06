@@ -1,4 +1,4 @@
-// ✅ REEMPLAZAR COMPLETAMENTE: src/components/layout/Sidebar.jsx
+// ✅ ACTUALIZAR: src/components/layout/Sidebar.jsx
 
 import { Link, useLocation } from 'react-router-dom';
 import {
@@ -9,13 +9,20 @@ import {
   FaQuestionCircle,
   FaChevronLeft,
   FaChevronRight,
+  FaUsersCog,
+  FaChartBar,
+  FaGraduationCap,
+  FaCog,
 } from 'react-icons/fa';
+import { usePermissions } from '../../hooks/usePermissions';
 import './Sidebar.css';
 
 function Sidebar({ isOpen, onToggle }) {
   const location = useLocation();
+  const { isAdmin, isInstructor, canViewReports, ROLES } = usePermissions();
 
-  const menuItems = [
+  // Menú básico para todos los usuarios
+  const baseMenuItems = [
     {
       id: 'inicio',
       name: 'Inicio',
@@ -44,14 +51,70 @@ function Sidebar({ isOpen, onToggle }) {
       path: '/logros',
       active: location.pathname === '/logros',
     },
-    {
-      id: 'ayuda',
-      name: 'Ayuda',
-      icon: <FaQuestionCircle />,
-      path: '/ayuda',
-      active: location.pathname === '/ayuda',
-    },
   ];
+
+  // Menú administrativo (solo para admins y super admins)
+  const adminMenuItems = [];
+
+  if (isAdmin()) {
+    adminMenuItems.push({
+      id: 'admin-dashboard',
+      name: 'Admin Dashboard',
+      icon: <FaCog />,
+      path: '/admin',
+      active: location.pathname === '/admin',
+    });
+
+    adminMenuItems.push({
+      id: 'users',
+      name: 'Usuarios',
+      icon: <FaUsersCog />,
+      path: '/admin/usuarios',
+      active: location.pathname === '/admin/usuarios',
+    });
+  }
+
+  // Gestión de cursos (para admins e instructores)
+  if (isAdmin() || isInstructor()) {
+    adminMenuItems.push({
+      id: 'course-management',
+      name: 'Gestionar Cursos',
+      icon: <FaGraduationCap />,
+      path: '/admin/cursos',
+      active: location.pathname === '/admin/cursos',
+    });
+  }
+
+  // Reportes (para quienes tengan permisos)
+  if (canViewReports()) {
+    adminMenuItems.push({
+      id: 'reports',
+      name: 'Reportes',
+      icon: <FaChartBar />,
+      path: '/reportes',
+      active: location.pathname === '/reportes',
+    });
+  }
+
+  // Ayuda siempre al final
+  const helpMenuItem = {
+    id: 'ayuda',
+    name: 'Ayuda',
+    icon: <FaQuestionCircle />,
+    path: '/ayuda',
+    active: location.pathname === '/ayuda',
+  };
+
+  // Combinar todos los items del menú
+  const allMenuItems = [...baseMenuItems];
+
+  // Agregar sección administrativa si hay items
+  if (adminMenuItems.length > 0) {
+    allMenuItems.push(...adminMenuItems);
+  }
+
+  // Agregar ayuda al final
+  allMenuItems.push(helpMenuItem);
 
   return (
     <aside className={`sidebar ${isOpen ? 'sidebar-open' : 'sidebar-closed'}`}>
@@ -80,7 +143,8 @@ function Sidebar({ isOpen, onToggle }) {
       {/* Navegación */}
       <nav className="sidebar-nav">
         <ul className="nav-list">
-          {menuItems.map((item) => (
+          {/* Items básicos */}
+          {baseMenuItems.map((item) => (
             <li key={item.id} className="nav-item">
               <Link
                 to={item.path}
@@ -92,6 +156,42 @@ function Sidebar({ isOpen, onToggle }) {
               </Link>
             </li>
           ))}
+
+          {/* Separador si hay items administrativos */}
+          {adminMenuItems.length > 0 && (
+            <li className="nav-separator">
+              {isOpen && <span className="separator-text">Administración</span>}
+            </li>
+          )}
+
+          {/* Items administrativos */}
+          {adminMenuItems.map((item) => (
+            <li key={item.id} className="nav-item">
+              <Link
+                to={item.path}
+                className={`nav-link ${item.active ? 'active' : ''}`}
+                title={!isOpen ? item.name : undefined}
+              >
+                <span className="nav-icon">{item.icon}</span>
+                {isOpen && <span className="nav-text">{item.name}</span>}
+              </Link>
+            </li>
+          ))}
+
+          {/* Separador antes de ayuda */}
+          <li className="nav-separator"></li>
+
+          {/* Ayuda */}
+          <li className="nav-item">
+            <Link
+              to={helpMenuItem.path}
+              className={`nav-link ${helpMenuItem.active ? 'active' : ''}`}
+              title={!isOpen ? helpMenuItem.name : undefined}
+            >
+              <span className="nav-icon">{helpMenuItem.icon}</span>
+              {isOpen && <span className="nav-text">{helpMenuItem.name}</span>}
+            </Link>
+          </li>
         </ul>
       </nav>
 

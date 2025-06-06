@@ -1,32 +1,30 @@
-// ✅ REEMPLAZAR: src/components/Home.jsx
+// ✅ ACTUALIZAR: src/components/Home.jsx
 
+import { usePermissions } from '../hooks/usePermissions';
 import DashboardLayout from './layout/DashboardLayout';
+import AdminHome from './home/AdminHome';
+import InstructorHome from './home/InstructorHome';
+import EmployeeHome from './home/EmployeeHome';
+import ManagerHome from './home/ManagerHome';
 
 function Home() {
-  return (
-    <DashboardLayout>
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          height: '100%',
-          textAlign: 'center',
-          color: '#6c757d',
-        }}
-      >
-        <div>
-          <h2 style={{ marginBottom: '10px', color: '#333' }}>
-            ¡Bienvenido al Dashboard!
-          </h2>
-          <p>
-            Esta es tu página principal. Aquí podrás agregar el contenido que
-            necesites.
-          </p>
-        </div>
-      </div>
-    </DashboardLayout>
-  );
+  const { isAdmin, isInstructor, isManager } = usePermissions();
+
+  // Renderizar el dashboard según el rol
+  if (isAdmin()) {
+    return <AdminHome />;
+  }
+
+  if (isInstructor()) {
+    return <InstructorHome />;
+  }
+
+  if (isManager()) {
+    return <ManagerHome />;
+  }
+
+  // Por defecto, mostrar el dashboard de empleado
+  return <EmployeeHome />;
 }
 
 export default Home;

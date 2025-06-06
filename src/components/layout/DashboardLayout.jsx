@@ -1,7 +1,7 @@
 // ✅ ACTUALIZAR: src/components/layout/DashboardLayout.jsx
 
 import { useState } from 'react';
-import Header from './Header';
+import Header from '../common/Header';
 import Sidebar from './Sidebar';
 import './DashboardLayout.css';
 
