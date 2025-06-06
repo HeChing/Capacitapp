@@ -1,52 +1,112 @@
-// ✅ CREAR: src/components/common/Header.jsx
+// ✅ REEMPLAZAR: src/components/layout/Header.jsx
 
+import { useState } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
-import { useNavigate } from 'react-router-dom';
-import Button from '../ui/Button';
+import { useNavigate, useLocation } from 'react-router-dom';
+import {
+  FaBell,
+  FaUser,
+  FaSignOutAlt,
+  FaCog,
+  FaChevronDown,
+} from 'react-icons/fa';
+import './Header.css';
 
 function Header() {
   const { currentUser, logout } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+  const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const handleLogout = async () => {
-    const { error } = await logout();
-    if (!error) {
-      navigate('/login');
-    }
+    await logout();
+    navigate('/login');
+  };
+
+  // Función para obtener el título de la página actual
+  const getPageTitle = () => {
+    const titles = {
+      '/': 'Dashboard',
+      '/dashboard': 'Dashboard',
+      '/inicio': 'Inicio',
+      '/cursos': 'Mis cursos',
+      '/logros': 'Logros',
+      '/ayuda': 'Ayuda',
+    };
+    return titles[location.pathname] || 'Dashboard';
+  };
+
+  // Función para obtener el breadcrumb
+  const getBreadcrumb = () => {
+    const breadcrumbs = {
+      '/': 'Inicio / Dashboard',
+      '/dashboard': 'Inicio / Dashboard',
+      '/inicio': 'Inicio',
+      '/cursos': 'Inicio / Mis cursos',
+      '/logros': 'Inicio / Logros',
+      '/ayuda': 'Inicio / Ayuda',
+    };
+    return breadcrumbs[location.pathname] || 'Inicio / Dashboard';
   };
 
   return (
-    <header
-      style={{
-        padding: '15px 30px',
-        backgroundColor: '#007bff',
-        color: 'white',
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-      }}
-    >
-      <h1 style={{ margin: 0, fontSize: '24px' }}>Capacitapp</h1>
+    <header className="dashboard-header">
+      {/* 🚫 BOTÓN ELIMINADO - Ya no está aquí */}
 
-      {currentUser && (
-        <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-          <span>Hola, {currentUser.displayName || currentUser.email}</span>
-          <div style={{ width: '120px' }}>
-            <Button
-              variant="outline"
-              onClick={handleLogout}
-              style={{
-                backgroundColor: 'white',
-                color: '#007bff',
-                padding: '8px 16px',
-              }}
-            >
-              Cerrar sesión
-            </Button>
-          </div>
+      {/* Título y breadcrumb dinámicos */}
+      <div className="header-title">
+        <h1>{getPageTitle()}</h1>
+        <p className="breadcrumb">{getBreadcrumb()}</p>
+      </div>
+
+      {/* Acciones del header */}
+      <div className="header-actions">
+        {/* Notificaciones */}
+        <button className="notification-btn">
+          <FaBell />
+          <span className="notification-badge">3</span>
+        </button>
+
+        {/* Usuario */}
+        <div className="user-menu">
+          <button
+            className="user-btn"
+            onClick={() => setDropdownOpen(!dropdownOpen)}
+          >
+            <div className="user-avatar">
+              {currentUser?.photoURL ? (
+                <img src={currentUser.photoURL} alt="Usuario" />
+              ) : (
+                <FaUser />
+              )}
+            </div>
+            <div className="user-info">
+              <span className="user-name">
+                {currentUser?.displayName ||
+                  currentUser?.email ||
+                  'Hector Ching'}
+              </span>
+              <span className="user-role">Admin</span>
+            </div>
+            <FaChevronDown className="dropdown-icon" />
+          </button>
+
+          {dropdownOpen && (
+            <div className="user-dropdown">
+              <button className="dropdown-item">
+                <FaUser /> Mi Perfil
+              </button>
+              <button className="dropdown-item">
+                <FaCog /> Configuración
+              </button>
+              <hr />
+              <button className="dropdown-item logout" onClick={handleLogout}>
+                <FaSignOutAlt /> Cerrar Sesión
+              </button>
+            </div>
+          )}
         </div>
-      )}
+      </div>
     </header>
   );
 }
