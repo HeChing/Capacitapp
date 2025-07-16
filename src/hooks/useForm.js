@@ -1,8 +1,7 @@
-// ✅ CREAR: src/hooks/useForm.js
-
+// ✅ VERIFICAR: src/hooks/useForm.js
 import { useState } from 'react';
 
-export function useForm(initialValues, validationRules = {}) {
+export const useForm = (initialValues, validationRules = {}) => {
   const [values, setValues] = useState(initialValues);
   const [errors, setErrors] = useState({});
   const [touched, setTouched] = useState({});
@@ -13,11 +12,11 @@ export function useForm(initialValues, validationRules = {}) {
       [name]: value,
     }));
 
-    // Limpiar error al escribir
+    // Limpiar error cuando el usuario empieza a escribir
     if (errors[name]) {
       setErrors((prev) => ({
         ...prev,
-        [name]: '',
+        [name]: null,
       }));
     }
   };
@@ -28,9 +27,9 @@ export function useForm(initialValues, validationRules = {}) {
       [name]: true,
     }));
 
-    // Validar campo
+    // Validar campo al perder el foco
     if (validationRules[name]) {
-      const error = validationRules[name](values[name], values);
+      const error = validationRules[name](values[name]);
       setErrors((prev) => ({
         ...prev,
         [name]: error,
@@ -40,11 +39,13 @@ export function useForm(initialValues, validationRules = {}) {
 
   const validate = () => {
     const newErrors = {};
+    let isValid = true;
 
     Object.keys(validationRules).forEach((field) => {
-      const error = validationRules[field](values[field], values);
+      const error = validationRules[field](values[field]);
       if (error) {
         newErrors[field] = error;
+        isValid = false;
       }
     });
 
@@ -56,7 +57,7 @@ export function useForm(initialValues, validationRules = {}) {
       }, {})
     );
 
-    return Object.keys(newErrors).length === 0;
+    return isValid;
   };
 
   const reset = () => {
@@ -74,4 +75,4 @@ export function useForm(initialValues, validationRules = {}) {
     validate,
     reset,
   };
-}
+};

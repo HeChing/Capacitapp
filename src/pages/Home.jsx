@@ -1,32 +1,37 @@
-// ✅ REEMPLAZAR: src/components/Home.jsx
+// ✅ CREAR: src/pages/Home.jsx
+import React from 'react';
+import { Link, Navigate } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
+import './Home.css';
 
-import DashboardLayout from './layout/DashboardLayout';
+const Home = () => {
+  const { currentUser } = useAuth();
 
-function Home() {
+  if (currentUser) {
+    return <Navigate to="/dashboard" replace />;
+  }
+
   return (
-    <DashboardLayout>
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          height: '100%',
-          textAlign: 'center',
-          color: '#6c757d',
-        }}
-      >
-        <div>
-          <h2 style={{ marginBottom: '10px', color: '#333' }}>
-            ¡Bienvenido al Dashboard!
-          </h2>
-          <p>
-            Esta es tu página principal. Aquí podrás agregar el contenido que
-            necesites.
-          </p>
+    <div className="home-page">
+      <div className="hero-section">
+        <div className="hero-content">
+          <h1>Bienvenido a Capacitapp</h1>
+          <p>Tu plataforma de capacitación empresarial</p>
+          <div className="cta-buttons">
+            <Link to="/login" className="btn-primary">
+              Iniciar Sesión
+            </Link>
+            <Link to="/register" className="btn-secondary">
+              Registrarse
+            </Link>
+          </div>
+        </div>
+        <div className="hero-image">
+          <img src="/logo.png" alt="Capacitapp" />
         </div>
       </div>
-    </DashboardLayout>
+    </div>
   );
-}
+};
 
 export default Home;

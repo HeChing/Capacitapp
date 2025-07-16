@@ -1,48 +1,50 @@
-// ✅ ACTUALIZAR: src/utils/initializeSuperAdmin.js
-
-import {
-  doc,
-  setDoc,
-  getDocs,
-  query,
-  collection,
-  where,
-} from 'firebase/firestore';
-import { db } from '../services/firebaseConfig';
+// ✅ CREAR: src/utils/initializeSuperAdmin.js
+import { doc, setDoc } from 'firebase/firestore';
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
+import { auth, db } from '../services/firebaseConfig';
 import { ROLES } from '../contexts/AuthContext';
 
-// Esta función debe ejecutarse una sola vez para crear el primer super admin
-export const initializeSuperAdmin = async (userId, email, displayName) => {
+export const initializeSuperAdmin = async () => {
   try {
-    const userRef = doc(db, 'users', userId);
-    await setDoc(userRef, {
-      uid: userId,
-      email: email,
-      displayName: displayName || 'Super Admin',
+    // Crear usuario super admin
+    const email = 'admin@capacitapp.com';
+    const password = 'SuperAdmin123!';
+    const displayName = 'Super Administrador';
+
+    const userCredential = await createUserWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
+    const user = userCredential.user;
+
+    // Actualizar perfil
+    await updateProfile(user, {
+      displayName: displayName,
+    });
+
+    // Crear documento en Firestore
+    await setDoc(doc(db, 'users', user.uid), {
+      uid: user.uid,
+      email: user.email,
+      displayName: displayName,
       role: ROLES.SUPER_ADMIN,
-      department: 'IT',
-      createdAt: new Date().toISOString(),
+      department: 'Administración',
+      position: 'Super Administrador',
       isActive: true,
-      isFirstSuperAdmin: true,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      profile: {
+        phoneNumber: '',
+        hireDate: new Date().toISOString(),
+        avatar: '',
+      },
     });
 
     console.log('Super Admin creado exitosamente');
-    return true;
+    return { success: true, user };
   } catch (error) {
     console.error('Error creando Super Admin:', error);
-    return false;
-  }
-};
-
-// Función para verificar si ya existe un super admin
-export const checkSuperAdminExists = async () => {
-  try {
-    const usersSnapshot = await getDocs(
-      query(collection(db, 'users'), where('role', '==', ROLES.SUPER_ADMIN))
-    );
-    return !usersSnapshot.empty;
-  } catch (error) {
-    console.error('Error verificando Super Admin:', error);
-    return false;
+    return { success: false, error: error.message };
   }
 };

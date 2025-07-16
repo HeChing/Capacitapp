@@ -1,22 +1,10 @@
-// ✅ CREAR: src/services/authService.js
-
-// import {
-//   signInWithEmailAndPassword,
-//   createUserWithEmailAndPassword,
-//   signInWithPopup,
-//   GoogleAuthProvider,
-//   signOut,
-//   sendPasswordResetEmail,
-//   updateProfile,
-// } from 'firebase/auth';
-// import { auth } from './firebaseConfig';
-
+// ✅ VERIFICAR: src/services/authService.js
 import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
-  signInWithPopup,
-  GoogleAuthProvider,
   signOut,
+  GoogleAuthProvider,
+  signInWithPopup,
   updateProfile,
 } from 'firebase/auth';
 import { auth } from './firebaseConfig';
@@ -24,28 +12,30 @@ import { auth } from './firebaseConfig';
 const googleProvider = new GoogleAuthProvider();
 
 export const authService = {
-  // Login con email
-  async loginWithEmail(email, password) {
+  // Login con email y contraseña
+  loginWithEmail: async (email, password) => {
     try {
       const result = await signInWithEmailAndPassword(auth, email, password);
       return { user: result.user, error: null };
     } catch (error) {
-      return { user: null, error: this.getErrorMessage(error.code) };
+      console.error('Error en loginWithEmail:', error);
+      return { user: null, error: error.message };
     }
   },
 
   // Login con Google
-  async loginWithGoogle() {
+  loginWithGoogle: async () => {
     try {
       const result = await signInWithPopup(auth, googleProvider);
       return { user: result.user, error: null };
     } catch (error) {
-      return { user: null, error: this.getErrorMessage(error.code) };
+      console.error('Error en loginWithGoogle:', error);
+      return { user: null, error: error.message };
     }
   },
 
   // Registro
-  async register(email, password, displayName = '') {
+  register: async (email, password, displayName) => {
     try {
       const result = await createUserWithEmailAndPassword(
         auth,
@@ -53,40 +43,28 @@ export const authService = {
         password
       );
 
+      // Actualizar el perfil con el nombre
       if (displayName) {
-        await updateProfile(result.user, { displayName });
+        await updateProfile(result.user, {
+          displayName: displayName,
+        });
       }
 
       return { user: result.user, error: null };
     } catch (error) {
-      return { user: null, error: this.getErrorMessage(error.code) };
+      console.error('Error en register:', error);
+      return { user: null, error: error.message };
     }
   },
 
   // Logout
-  async logout() {
+  logout: async () => {
     try {
       await signOut(auth);
       return { error: null };
     } catch (error) {
-      return { error: this.getErrorMessage(error.code) };
+      console.error('Error en logout:', error);
+      return { error: error.message };
     }
-  },
-
-  // Mensajes de error amigables
-  getErrorMessage(errorCode) {
-    const errorMessages = {
-      'auth/user-not-found': 'No existe una cuenta con este email',
-      'auth/wrong-password': 'Contraseña incorrecta',
-      'auth/invalid-email': 'Email inválido',
-      'auth/weak-password': 'La contraseña debe tener al menos 6 caracteres',
-      'auth/email-already-in-use': 'Ya existe una cuenta con este email',
-      'auth/too-many-requests': 'Demasiados intentos. Intenta más tarde',
-      'auth/network-request-failed': 'Error de conexión',
-      'auth/popup-closed-by-user': 'Proceso cancelado',
-      'auth/invalid-credential': 'Credenciales inválidas',
-    };
-
-    return errorMessages[errorCode] || 'Error inesperado. Intenta nuevamente';
   },
 };

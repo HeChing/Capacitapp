@@ -1,5 +1,4 @@
-// ✅ REEMPLAZAR: src/components/layout/Header.jsx
-
+// src/components/common/Header.jsx - CON DEBUGGING
 import { useState } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -9,65 +8,78 @@ import {
   FaSignOutAlt,
   FaCog,
   FaChevronDown,
+  FaBars,
 } from 'react-icons/fa';
 import './Header.css';
 
-function Header() {
+function Header({ onToggleSidebar }) {
+  console.log('Header renderizando'); // DEBUGGING
+
   const { currentUser, logout } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
+  // Para obtener el rol de forma simple por ahora
+  const userRole = 'employee'; // Hardcodeado temporalmente
+
+  console.log('CurrentUser en Header:', currentUser); // DEBUGGING
+
   const handleLogout = async () => {
+    setDropdownOpen(false);
     await logout();
     navigate('/login');
   };
 
-  // Función para obtener el título de la página actual
   const getPageTitle = () => {
     const titles = {
-      '/': 'Dashboard',
       '/dashboard': 'Dashboard',
-      '/inicio': 'Inicio',
-      '/cursos': 'Mis cursos',
-      '/logros': 'Logros',
-      '/ayuda': 'Ayuda',
+      '/dashboard/inicio': 'Inicio',
+      '/dashboard/mis-cursos': 'Mis Cursos',
+      '/dashboard/logros': 'Logros',
     };
     return titles[location.pathname] || 'Dashboard';
   };
 
-  // Función para obtener el breadcrumb
   const getBreadcrumb = () => {
-    const breadcrumbs = {
-      '/': 'Inicio / Dashboard',
-      '/dashboard': 'Inicio / Dashboard',
-      '/inicio': 'Inicio',
-      '/cursos': 'Inicio / Mis cursos',
-      '/logros': 'Inicio / Logros',
-      '/ayuda': 'Inicio / Ayuda',
+    const pathSegments = location.pathname.split('/').filter(Boolean);
+    return pathSegments.join(' / ');
+  };
+
+  const getRoleDisplayName = () => {
+    const roleNames = {
+      super_admin: 'Super Administrador',
+      admin: 'Administrador',
+      instructor: 'Instructor',
+      manager: 'Manager',
+      employee: 'Empleado',
     };
-    return breadcrumbs[location.pathname] || 'Inicio / Dashboard';
+    return roleNames[userRole] || 'Usuario';
   };
 
   return (
     <header className="dashboard-header">
-      {/* 🚫 BOTÓN ELIMINADO - Ya no está aquí */}
+      <div style={{ padding: '10px', color: 'white' }}>HEADER AQUÍ</div>
 
-      {/* Título y breadcrumb dinámicos */}
+      <button
+        className="sidebar-toggle"
+        onClick={onToggleSidebar}
+        aria-label="Toggle sidebar"
+      >
+        <FaBars />
+      </button>
+
       <div className="header-title">
         <h1>{getPageTitle()}</h1>
         <p className="breadcrumb">{getBreadcrumb()}</p>
       </div>
 
-      {/* Acciones del header */}
       <div className="header-actions">
-        {/* Notificaciones */}
-        <button className="notification-btn">
+        <button className="notification-btn" title="Notificaciones">
           <FaBell />
           <span className="notification-badge">3</span>
         </button>
 
-        {/* Usuario */}
         <div className="user-menu">
           <button
             className="user-btn"
@@ -83,12 +95,14 @@ function Header() {
             <div className="user-info">
               <span className="user-name">
                 {currentUser?.displayName ||
-                  currentUser?.email ||
-                  'Hector Ching'}
+                  currentUser?.email?.split('@')[0] ||
+                  'Usuario'}
               </span>
-              <span className="user-role">Admin</span>
+              <span className="user-role">{getRoleDisplayName()}</span>
             </div>
-            <FaChevronDown className="dropdown-icon" />
+            <FaChevronDown
+              className={`dropdown-icon ${dropdownOpen ? 'open' : ''}`}
+            />
           </button>
 
           {dropdownOpen && (

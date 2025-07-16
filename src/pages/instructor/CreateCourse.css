@@ -1,0 +1,46 @@
+/* ✅ AGREGAR a todos los archivos CSS de las páginas */
+
+/* Mensaje de bienvenida sin título duplicado */
+.welcome-message {
+  margin-bottom: 30px;
+}
+
+.welcome-message p {
+  font-size: 1.1rem;
+  color: #718096;
+  margin: 0;
+  font-weight: 500;
+}
+
+/* Ajustar el primer elemento después de quitar el header */
+.stats-grid {
+  margin-top: 0; /* Quitar margen superior extra */
+}
+
+/* Para páginas que ya no tienen dashboard-header */
+.employee-home,
+.admin-dashboard,
+.instructor-home,
+.manager-home {
+  padding-top: 10px; /* Reducir padding superior */
+}
+
+/* Remover estilos del dashboard-header duplicado si existen */
+.dashboard-header {
+  display: none; /* Ocultar cualquier header duplicado en las páginas */
+}
+
+.admin-section {
+  background-color: #f8f9fa;
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin: 1.5rem 0;
+  border-left: 4px solid #007bff;
+}
+
+.admin-section h3 {
+  margin-top: 0;
+  color: #007bff;
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+}

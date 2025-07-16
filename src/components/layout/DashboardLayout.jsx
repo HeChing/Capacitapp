@@ -1,11 +1,11 @@
-// ✅ ACTUALIZAR: src/components/layout/DashboardLayout.jsx
-
-import { useState } from 'react';
-import Header from '../common/Header';
+// ✅ VERIFICAR: src/components/layout/DashboardLayout.jsx
+import React, { useState } from 'react';
+import { Outlet } from 'react-router-dom';
 import Sidebar from './Sidebar';
+import Header from '../common/Header'; // ← Asegúrate de que apunte a common/Header
 import './DashboardLayout.css';
 
-function DashboardLayout({ children }) {
+const DashboardLayout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
   const toggleSidebar = () => {
@@ -14,29 +14,17 @@ function DashboardLayout({ children }) {
 
   return (
     <div className="dashboard-layout">
-      {/* Sidebar */}
       <Sidebar isOpen={sidebarOpen} onToggle={toggleSidebar} />
-
-      {/* Contenido principal */}
       <div
-        className={`main-content ${sidebarOpen ? 'sidebar-open' : 'sidebar-closed'}`}
+        className={`dashboard-main ${sidebarOpen ? 'sidebar-open' : 'sidebar-closed'}`}
       >
-        {/* Header */}
         <Header onToggleSidebar={toggleSidebar} />
-
-        {/* Área de contenido */}
-        <main className="content-area">{children}</main>
+        <main className="main-content">
+          <Outlet />
+        </main>
       </div>
-
-      {/* Overlay para mobile */}
-      {sidebarOpen && (
-        <div
-          className="sidebar-overlay"
-          onClick={() => setSidebarOpen(false)}
-        />
-      )}
     </div>
   );
-}
+};
 
 export default DashboardLayout;

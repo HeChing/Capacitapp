@@ -1,5 +1,4 @@
-// ✅ ACTUALIZAR: src/contexts/AuthContext.jsx
-
+// ✅ VERIFICAR: src/contexts/AuthContext.jsx
 import { createContext, useContext, useEffect, useState } from 'react';
 import { onAuthStateChanged } from 'firebase/auth';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
@@ -88,8 +87,10 @@ export function AuthProvider({ children }) {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        try {
+      try {
+        if (user) {
+          console.log('Usuario autenticado:', user.uid); // Debug
+
           // Obtener datos del usuario desde Firestore
           const userDocRef = doc(db, 'users', user.uid);
           const userDoc = await getDoc(userDocRef);
@@ -100,6 +101,9 @@ export function AuthProvider({ children }) {
             const userPermissions =
               ROLE_PERMISSIONS[role] || ROLE_PERMISSIONS[ROLES.EMPLOYEE];
 
+            console.log('Datos del usuario:', userData); // Debug
+            console.log('Rol del usuario:', role); // Debug
+
             setCurrentUser({
               ...user,
               ...userData,
@@ -108,11 +112,13 @@ export function AuthProvider({ children }) {
             setUserRole(role);
             setPermissions(userPermissions);
           } else {
+            console.log('Documento de usuario no existe, creando uno nuevo'); // Debug
+
             // Si no existe el documento, crear uno con rol por defecto
             const defaultUserData = {
               uid: user.uid,
               email: user.email,
-              displayName: user.displayName || '',
+              displayName: user.displayName || user.email.split('@')[0],
               role: ROLES.EMPLOYEE,
               department: '',
               createdAt: new Date().toISOString(),
@@ -128,18 +134,23 @@ export function AuthProvider({ children }) {
             setUserRole(ROLES.EMPLOYEE);
             setPermissions(ROLE_PERMISSIONS[ROLES.EMPLOYEE]);
           }
-        } catch (error) {
-          console.error('Error obteniendo datos del usuario:', error);
+        } else {
+          console.log('Usuario no autenticado'); // Debug
+          setCurrentUser(null);
+          setUserRole(null);
+          setPermissions([]);
+        }
+      } catch (error) {
+        console.error('Error en AuthContext:', error);
+        // En caso de error, establecer valores por defecto
+        if (user) {
           setCurrentUser(user);
           setUserRole(ROLES.EMPLOYEE);
           setPermissions(ROLE_PERMISSIONS[ROLES.EMPLOYEE]);
         }
-      } else {
-        setCurrentUser(null);
-        setUserRole(null);
-        setPermissions([]);
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     });
 
     return unsubscribe;
@@ -176,37 +187,58 @@ export function AuthProvider({ children }) {
 
   // Funciones de autenticación existentes
   const login = async (email, password) => {
-    return await authService.loginWithEmail(email, password);
+    try {
+      return await authService.loginWithEmail(email, password);
+    } catch (error) {
+      console.error('Error en login:', error);
+      throw error;
+    }
   };
 
   const loginWithGoogle = async () => {
-    return await authService.loginWithGoogle();
+    try {
+      return await authService.loginWithGoogle();
+    } catch (error) {
+      console.error('Error en login con Google:', error);
+      throw error;
+    }
   };
 
   const register = async (email, password, displayName) => {
-    const result = await authService.register(email, password, displayName);
+    try {
+      const result = await authService.register(email, password, displayName);
 
-    // Crear documento de usuario en Firestore
-    if (result.user) {
-      const userDocRef = doc(db, 'users', result.user.uid);
-      await setDoc(userDocRef, {
-        uid: result.user.uid,
-        email: result.user.email,
-        displayName: displayName || '',
-        role: ROLES.EMPLOYEE,
-        department: '',
-        createdAt: new Date().toISOString(),
-        isActive: true,
-      });
+      // Crear documento de usuario en Firestore
+      if (result.user) {
+        const userDocRef = doc(db, 'users', result.user.uid);
+        await setDoc(userDocRef, {
+          uid: result.user.uid,
+          email: result.user.email,
+          displayName: displayName || result.user.email.split('@')[0],
+          role: ROLES.EMPLOYEE,
+          department: '',
+          createdAt: new Date().toISOString(),
+          isActive: true,
+        });
+      }
+
+      return result;
+    } catch (error) {
+      console.error('Error en register:', error);
+      throw error;
     }
-
-    return result;
   };
 
   const logout = async () => {
-    return await authService.logout();
+    try {
+      return await authService.logout();
+    } catch (error) {
+      console.error('Error en logout:', error);
+      throw error;
+    }
   };
 
+  // En tu AuthContext.jsx, verifica que el value incluya:
   const value = {
     currentUser,
     userRole,
@@ -216,11 +248,11 @@ export function AuthProvider({ children }) {
     register,
     logout,
     loading,
-    hasPermission,
-    hasAnyPermission,
-    hasAllPermissions,
-    hasRole,
-    hasAnyRole,
+    hasPermission, // ← Debe estar aquí
+    hasAnyPermission, // ← Debe estar aquí
+    hasAllPermissions, // ← Debe estar aquí
+    hasRole, // ← Debe estar aquí
+    hasAnyRole, // ← Debe estar aquí
     ROLES,
     ROLE_PERMISSIONS,
   };

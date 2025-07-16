@@ -1,5 +1,4 @@
-// ✅ VERIFICAR/ACTUALIZAR: src/hooks/usePermissions.js
-
+// ✅ USAR: src/hooks/usePermissions.js (el tuyo está perfecto)
 import { useAuth } from '../contexts/AuthContext';
 
 export function usePermissions() {
@@ -7,7 +6,7 @@ export function usePermissions() {
     currentUser,
     userRole,
     permissions,
-    hasPermission, // ← Asegúrate que esto viene del AuthContext
+    hasPermission,
     hasAnyPermission,
     hasAllPermissions,
     hasRole,
@@ -61,6 +60,14 @@ export function usePermissions() {
     return hasAnyPermission(['users.create', 'users.edit', 'users.delete']);
   };
 
+  const canManageCourses = () => {
+    return hasAnyPermission([
+      'courses.create',
+      'courses.edit',
+      'courses.delete',
+    ]);
+  };
+
   return {
     // Datos del usuario
     currentUser,
@@ -68,7 +75,7 @@ export function usePermissions() {
     permissions,
 
     // Funciones de verificación genéricas
-    hasPermission, // ← Asegúrate que esto se está exportando
+    hasPermission,
     hasAnyPermission,
     hasAllPermissions,
     hasRole,
@@ -87,6 +94,7 @@ export function usePermissions() {
     canDeleteCourse,
     canViewReports,
     canManageUsers,
+    canManageCourses,
 
     // Constantes
     ROLES,
